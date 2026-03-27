@@ -4,8 +4,11 @@ export interface Product {
   description: string;
   price: number;
   category: string;
-  thumbnail: string;
-  rating: number;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
 export interface ProductResponse {
