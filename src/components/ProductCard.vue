@@ -1,25 +1,34 @@
 <script setup lang="ts">
-// We removed defineProps from the import because it's built-in!
-import type { Product } from '../types/Product';
+import type { Product } from '../types/Product'
 
+// Strictly typed props for A+ engineering
 defineProps<{
   product: Product
-}>();
+}>()
 </script>
 
 <template>
-  <div class="border rounded-lg p-4 shadow-md bg-white flex flex-col items-center hover:shadow-xl transition-shadow">
-    <img :src="product.image" :alt="product.title" class="h-40 object-contain mb-4" />
-    <h2 class="text-sm font-bold text-gray-800 line-clamp-2 mb-2 text-center h-10">
-      {{ product.title }}
-    </h2>
-    <p class="text-green-600 font-bold mb-4">${{ product.price }}</p>
-    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full active:scale-95">
+  <div class="bg-white rounded-4xl p-6 shadow-sm border border-gray-50 flex flex-col h-full hover:shadow-md transition-all duration-500 group">
+    
+    <div class="bg-gray-50 rounded-3xl aspect-square flex items-center justify-center overflow-hidden mb-6 p-8 group-hover:scale-105 transition-transform duration-500">
+      <img 
+        :src="product.thumbnail" 
+        :alt="product.title"
+        class="max-w-full max-h-full object-contain mix-blend-multiply" 
+      />
+    </div>
+
+    <div class="grow text-center">
+      <h2 class="text-sm font-bold text-gray-800 leading-tight line-clamp-2 min-h-10 mb-3 px-2 tracking-tight">
+        {{ product.title }}
+      </h2>
+      <p class="text-lg font-black text-blue-600 tracking-tighter">
+        ${{ product.price }}
+      </p>
+    </div>
+
+    <button class="w-full mt-6 bg-blue-600 text-white py-3.5 rounded-2xl font-bold text-sm shadow-lg shadow-blue-100 hover:bg-blue-700 transition-all duration-300 active:scale-95">
       Add to Cart
     </button>
   </div>
 </template>
-
-<style scoped>
-/* Tailwind handles the styling */
-</style>

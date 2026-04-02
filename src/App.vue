@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import ProductCard from './components/ProductCard.vue'
-import type { Product } from './types/Product'
+// Import the interfaces from your Product.ts file
+import type { Product, ProductResponse } from './types/Product'
 
-// 1. Data storage
+// 1. Strictly typed state management [cite: 15, 51]
 const products = ref<Product[]>([])
 const searchQuery = ref('')
 const loading = ref(true)
 
-// 2. Get data from the Fake Store API
+// 2. Fetch data from the MANDATORY DummyJSON API 
 const fetchProducts = async () => {
   try {
-    const response = await fetch('https://fakestoreapi.com/products')
-    products.value = await response.json()
+    const response = await fetch('https://dummyjson.com/products')
+    const data: ProductResponse = await response.json()
+    
+    // DummyJSON returns an object with a .products array [cite: 56]
+    products.value = data.products
   } catch (error) {
     console.error('Error fetching products:', error)
   } finally {
@@ -20,7 +24,7 @@ const fetchProducts = async () => {
   }
 }
 
-// 3. Filter products when you type in the search bar
+// 3. Search functionality [cite: 21]
 const filteredProducts = computed(() => {
   return products.value.filter(product =>
     product.title.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -33,7 +37,7 @@ onMounted(fetchProducts)
 <template>
   <div class="min-h-screen bg-gray-50 p-6">
     <header class="max-w-6xl mx-auto mb-10 text-center">
-      <h1 class="text-3xl font-extrabold text-blue-800 mb-6">Ecommerce Product Store</h1>
+      <h1 class="text-3xl font-extrabold text-blue-800 mb-6">Modern E-Commerce Store</h1>
       
       <div class="max-w-md mx-auto relative">
         <input 
@@ -65,7 +69,3 @@ onMounted(fetchProducts)
     </main>
   </div>
 </template>
-
-<style>
-/* Using Tailwind for all styling - no extra CSS needed here */
-</style>
