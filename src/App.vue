@@ -1,71 +1,43 @@
-<script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import ProductCard from './components/ProductCard.vue'
-// Import the interfaces from your Product.ts file
-import type { Product, ProductResponse } from './types/Product'
+<script setup>
+import { ref } from 'vue';
 
-// 1. Strictly typed state management [cite: 15, 51]
-const products = ref<Product[]>([])
-const searchQuery = ref('')
-const loading = ref(true)
+// Logic for the Dark Mode bonus feature
+const isDark = ref(false);
 
-// 2. Fetch data from the MANDATORY DummyJSON API 
-const fetchProducts = async () => {
-  try {
-    const response = await fetch('https://dummyjson.com/products')
-    const data: ProductResponse = await response.json()
-    
-    // DummyJSON returns an object with a .products array [cite: 56]
-    products.value = data.products
-  } catch (error) {
-    console.error('Error fetching products:', error)
-  } finally {
-    loading.value = false
-  }
-}
-
-// 3. Search functionality [cite: 21]
-const filteredProducts = computed(() => {
-  return products.value.filter(product =>
-    product.title.toLowerCase().includes(searchQuery.value.toLowerCase())
-  )
-})
-
-onMounted(fetchProducts)
+const toggleDark = () => {
+  isDark.value = !isDark.value;
+  // Toggles the 'dark' class on the root element for Tailwind CSS
+  document.documentElement.classList.toggle('dark');
+};
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 p-6">
-    <header class="max-w-6xl mx-auto mb-10 text-center">
-      <h1 class="text-3xl font-extrabold text-blue-800 mb-6">Modern E-Commerce Store</h1>
+  <div class="min-h-screen transition-colors duration-300 bg-gray-50 dark:bg-gray-900 dark:text-white">
+    
+    <nav class="p-4 bg-white dark:bg-gray-800 shadow-md flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600">My Store</h1>
       
-      <div class="max-w-md mx-auto relative">
-        <input 
-          v-model="searchQuery"
-          type="text" 
-          placeholder="Search items..." 
-          class="w-full p-4 pl-12 rounded-xl border border-gray-200 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none transition-all"
-        />
-        <span class="absolute left-4 top-4 text-gray-400">🔍</span>
+      <div class="flex gap-6 items-center">
+        <router-link to="/" class="hover:text-blue-500 font-medium">Home</router-link>
+        <router-link to="/login" class="hover:text-blue-500 font-medium">Login</router-link>
+        
+        <button @click="toggleDark" class="p-2 bg-gray-100 dark:bg-gray-700 rounded-full text-lg shadow-inner">
+          {{ isDark ? '☀️' : '🌙' }}
+        </button>
       </div>
-    </header>
+    </nav>
 
-    <main class="max-w-6xl mx-auto">
-      <div v-if="loading" class="flex justify-center items-center py-20">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div>
-      </div>
-
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <ProductCard 
-          v-for="product in filteredProducts" 
-          :key="product.id" 
-          :product="product" 
-        />
-      </div>
-
-      <div v-if="!loading && filteredProducts.length === 0" class="text-center py-20 text-gray-400">
-        No products found for "{{ searchQuery }}"
-      </div>
+    <main class="container mx-auto p-4">
+      <router-view />
     </main>
+    
   </div>
 </template>
+
+<style scoped>
+/* Optional: ensures active links are highlighted */
+.router-link-active {
+  color: #2563eb; /* text-blue-600 */
+  font-weight: 700;
+}
+</style>

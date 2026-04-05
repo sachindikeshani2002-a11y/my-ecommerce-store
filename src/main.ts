@@ -1,5 +1,24 @@
 import { createApp } from 'vue'
-import './style.css'
+import { createPinia } from 'pinia'
+import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
+import './style.css'
 
-createApp(App).mount('#app')
+// IMPORTANT: These must match your folder structure exactly
+import HomeView from './views/HomeView.vue'
+import LoginView from './views/LoginView.vue'
+
+const routes = [
+  { path: '/', component: HomeView },
+  { path: '/login', component: LoginView }
+]
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
+
+const app = createApp(App)
+app.use(createPinia())
+app.use(router)
+app.mount('#app')
