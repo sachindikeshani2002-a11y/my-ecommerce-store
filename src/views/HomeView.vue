@@ -13,7 +13,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="p-6 transition-colors duration-300" :style="{ backgroundColor: isDark ? '#0f172a' : '#ffffff' }">
+  <div class="min-h-screen p-6 transition-colors duration-300" :style="{ backgroundColor: isDark ? '#020617' : '#ffffff' }">
     <div v-if="products.length > 0" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <ProductCard v-for="p in products" :key="p.id" :product="p" />
     </div>

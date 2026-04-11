@@ -1,30 +1,63 @@
 <script setup lang="ts">
 import { useCartStore } from '../stores/cart'
-import { inject } from 'vue';
+import { inject, ref, type Ref } from 'vue';
 
-const props = defineProps(['product'])
+interface Product {
+  id: number
+  title: string
+  price: number
+  thumbnail: string
+  category: string
+  stock: number
+  rating: number
+}
+
+const props = defineProps<{ product: Product }>()
 const cartStore = useCartStore()
-const isDark = inject('isDark', { value: false })
+const isDark = inject<Ref<boolean>>('isDark') ?? ref(false)
 </script>
 
 <template>
-  <div class="border rounded-xl overflow-hidden shadow-sm hover:shadow-md flex flex-col h-full p-4 transition-all" :style="{ 
-    backgroundColor: isDark.value ? '#1f2937' : '#ffffff',
-    borderColor: isDark.value ? '#374151' : '#e5e7eb',
+  <article class="border rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col h-full" :style="{
+    backgroundColor: isDark ? '#0f172a' : '#ffffff',
+    borderColor: isDark ? '#334155' : '#e5e7eb'
   }">
-    <img :src="product.thumbnail" class="w-full h-48 object-cover rounded-lg mb-4" />
-    
-    <div class="flex flex-col grow">
-      <h3 class="font-bold text-lg truncate transition-colors" :style="{ color: isDark.value ? '#f1f5f9' : '#111827' }">{{ product.title }}</h3>
-      <p class="font-bold text-xl mb-4 transition-colors" :style="{ color: isDark.value ? '#93c5fd' : '#2563eb' }">${{ product.price }}</p>
+    <div class="overflow-hidden rounded-t-3xl bg-slate-950">
+      <img :src="props.product.thumbnail" alt="{{ props.product.title }}" class="w-full h-52 object-cover transition-transform duration-500 hover:scale-105" />
+    </div>
 
-      <button 
-        @click="cartStore.addToCart(product)"
-        class="mt-auto w-full py-2 rounded-lg font-semibold transition hover:scale-105 text-white"
-        :style="{ backgroundColor: isDark.value ? '#1e40af' : '#2563eb' }"
+    <div class="px-5 py-4 flex flex-col grow">
+      <div class="flex items-center justify-between mb-3 gap-3">
+        <span class="uppercase tracking-[0.2em] font-semibold rounded-full px-3 py-1 text-xs" :style="{
+          color: isDark ? '#a7f3d0' : '#065f46',
+          backgroundColor: isDark ? 'rgba(16,185,129,0.12)' : 'rgba(16,185,129,0.08)'
+        }">{{ props.product.category }}</span>
+
+        <span class="inline-flex items-center gap-1 text-sm font-semibold" :style="{ color: isDark ? '#f8fafc' : '#1f2937' }">
+          <span>★</span>{{ props.product.rating.toFixed(1) }}
+        </span>
+      </div>
+
+      <h3 class="font-semibold text-lg leading-7 mb-3 truncate" :style="{ color: isDark ? '#f8fafc' : '#111827' }">{{ props.product.title }}</h3>
+
+      <div class="flex items-end justify-between gap-3 mb-5">
+        <div>
+          <p class="text-2xl font-bold" :style="{ color: isDark ? '#34d399' : '#10b981' }">${{ props.product.price }}</p>
+          <p class="text-sm mt-1" :style="{ color: isDark ? '#94a3b8' : '#6b7280' }">Stock: {{ props.product.stock }}</p>
+        </div>
+        <span class="text-sm font-medium" :style="{ color: isDark ? '#cbd5e1' : '#4b5563' }">Available</span>
+      </div>
+
+      <button
+        @click="cartStore.addToCart(props.product)"
+        class="w-full rounded-2xl py-3 font-semibold transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+        :style="{
+          backgroundColor: isDark ? '#10b981' : '#16a34a',
+          color: '#ffffff'
+        }"
       >
         Add to Cart
       </button>
     </div>
-  </div>
+  </article>
 </template>
