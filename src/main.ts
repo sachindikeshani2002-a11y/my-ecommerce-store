@@ -7,10 +7,12 @@ import './style.css'
 // IMPORTANT: These must match your folder structure exactly
 import HomeView from './views/HomeView.vue'
 import LoginView from './views/LoginView.vue'
+import ProductDetailView from './views/ProductDetailView.vue'
 
 const routes = [
   { path: '/', component: HomeView },
-  { path: '/login', component: LoginView }
+  { path: '/login', component: LoginView },
+  { path: '/product/:id', component: ProductDetailView }
 ]
 
 const router = createRouter({

@@ -6,6 +6,9 @@ export interface Product {
   category: string;
   thumbnail: string;
   rating: number;
+  stock?: number;
+  brand?: string;
+  images?: string[];
 }
 
 export interface ProductResponse {

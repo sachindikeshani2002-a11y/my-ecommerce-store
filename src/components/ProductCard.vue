@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCartStore } from '../stores/cart'
 import { inject, ref, type Ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 interface Product {
   id: number
@@ -14,7 +15,12 @@ interface Product {
 
 const props = defineProps<{ product: Product }>()
 const cartStore = useCartStore()
+const router = useRouter()
 const isDark = inject<Ref<boolean>>('isDark') ?? ref(false)
+
+const viewDetails = () => {
+  router.push(`/product/${props.product.id}`)
+}
 </script>
 
 <template>
@@ -46,6 +52,19 @@ const isDark = inject<Ref<boolean>>('isDark') ?? ref(false)
           <p class="text-sm mt-1" :style="{ color: isDark ? '#94a3b8' : '#6b7280' }">Stock: {{ props.product.stock }}</p>
         </div>
         <span class="text-sm font-medium" :style="{ color: isDark ? '#cbd5e1' : '#4b5563' }">Available</span>
+      </div>
+
+      <div class="flex gap-2 mb-4">
+        <button
+          @click="viewDetails"
+          class="flex-1 rounded-2xl py-3 font-semibold transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          :style="{
+            backgroundColor: isDark ? '#065f46' : '#d1fae5',
+            color: isDark ? '#ecfdf5' : '#065f46'
+          }"
+        >
+          View Details
+        </button>
       </div>
 
       <button
