@@ -8,11 +8,13 @@ import './style.css'
 import HomeView from './views/HomeView.vue'
 import LoginView from './views/LoginView.vue'
 import ProductDetailView from './views/ProductDetailView.vue'
+import CartView from './views/CartView.vue'
 
 const routes = [
   { path: '/', component: HomeView },
   { path: '/login', component: LoginView },
-  { path: '/product/:id', component: ProductDetailView }
+  { path: '/product/:id', component: ProductDetailView },
+  { path: '/cart', component: CartView }
 ]
 
 const router = createRouter({

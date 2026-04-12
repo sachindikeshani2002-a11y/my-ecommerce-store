@@ -1,7 +1,9 @@
 <script setup>
 import { ref, onMounted, computed, provide } from 'vue';
+import { useCartStore } from './stores/cart';
 
 const isDark = ref(false);
+const cartStore = useCartStore();
 
 // Provide isDark to all child components
 provide('isDark', isDark);
@@ -64,6 +66,14 @@ const pageStyle = computed(() => {
         <router-link to="/" class="font-medium transition" :style="{ 
           color: isDark ? '#d1d5db' : '#374151',
         }" @mouseenter="e => e.target.style.color = isDark ? '#93c5fd' : '#2563eb'" @mouseleave="e => e.target.style.color = isDark ? '#d1d5db' : '#374151'">Home</router-link>
+        <router-link to="/cart" class="font-medium transition relative" :style="{ 
+          color: isDark ? '#d1d5db' : '#374151',
+        }" @mouseenter="e => e.target.style.color = isDark ? '#93c5fd' : '#2563eb'" @mouseleave="e => e.target.style.color = isDark ? '#d1d5db' : '#374151'">
+          Cart
+          <span v-if="cartStore.itemCount > 0" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            {{ cartStore.itemCount }}
+          </span>
+        </router-link>
         <router-link to="/login" class="font-medium transition" :style="{ 
           color: isDark ? '#d1d5db' : '#374151',
         }" @mouseenter="e => e.target.style.color = isDark ? '#93c5fd' : '#2563eb'" @mouseleave="e => e.target.style.color = isDark ? '#d1d5db' : '#374151'">Login</router-link>

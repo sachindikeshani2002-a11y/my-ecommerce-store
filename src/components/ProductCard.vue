@@ -2,16 +2,7 @@
 import { useCartStore } from '../stores/cart'
 import { inject, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-interface Product {
-  id: number
-  title: string
-  price: number
-  thumbnail: string
-  category: string
-  stock: number
-  rating: number
-}
+import type { Product } from '../types/Product';
 
 const props = defineProps<{ product: Product }>()
 const cartStore = useCartStore()
